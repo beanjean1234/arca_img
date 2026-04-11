@@ -68,9 +68,17 @@ function applyFoldState() {
   if (currentSettings.isFolded) {
     bodyEl.style.display = 'none';
     foldBtn.innerText = '펼치기';
+    
+    // Collapse popup to header height
+    if (popupEl) popupEl.style.height = 'auto';
   } else {
     bodyEl.style.display = 'flex';
     foldBtn.innerText = '접기';
+    
+    // Restore user-adjusted height if available
+    if (popupEl && savedSize && savedSize.h && savedSize.h !== 'auto') {
+      popupEl.style.height = savedSize.h;
+    }
   }
 }
 
@@ -247,11 +255,20 @@ function createPopup() {
 
   // Observe resize to save width/height state
   const resizeObserver = new ResizeObserver(() => {
-    if (popupEl.style.width || popupEl.style.height) {
-      chrome.storage.local.set({
-        arcaPopupW: popupEl.style.width,
-        arcaPopupH: popupEl.style.height
-      });
+    if (currentSettings.isFolded) {
+      // Don't accidentally save the 'folded/collapsed' auto height
+      if (popupEl.style.width) {
+        savedSize = { ...savedSize, w: popupEl.style.width };
+        chrome.storage.local.set({ arcaPopupW: popupEl.style.width });
+      }
+    } else {
+      if (popupEl.style.width || popupEl.style.height) {
+        savedSize = { w: popupEl.style.width, h: popupEl.style.height };
+        chrome.storage.local.set({
+          arcaPopupW: popupEl.style.width,
+          arcaPopupH: popupEl.style.height
+        });
+      }
     }
   });
   resizeObserver.observe(popupEl);
