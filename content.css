@@ -1,0 +1,308 @@
+#arca-img-popup {
+  position: fixed;
+  background: rgba(30, 41, 59, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  z-index: 999999;
+  width: 400px;
+  min-width: 250px;
+  max-width: 90vw;
+  max-height: 90vh;
+  resize: both;
+  overflow: hidden !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  visibility: hidden;
+  display: flex !important;
+  flex-direction: column;
+}
+
+#arca-img-popup::-webkit-resizer {
+  background-color: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8 12 L12 8 M3 12 L12 3' stroke='rgba(255, 255, 255, 0.7)' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: bottom 3px right 3px;
+}
+
+.arca-img-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+#arca-img-popup.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.arca-img-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.arca-drag-zone {
+  flex: 1;
+  padding: 8px 12px;
+  cursor: grab;
+  color: #94a3b8;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  user-select: none;
+}
+
+.arca-drag-zone:active {
+  cursor: grabbing;
+}
+
+.arca-fold-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #f8fafc;
+  padding: 6px 10px;
+  margin-right: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 11px;
+  transition: all 0.2s;
+}
+
+.arca-fold-btn:hover {
+  background: #0ea5e9;
+  color: #fff;
+}
+
+/* Controls Wrapper */
+.arca-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 6px 4px 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 8px;
+}
+
+/* Select All Wrap */
+.arca-select-all-wrap {
+  display: none; /* Flex when in select mode */
+  margin-bottom: 8px;
+  padding-left: 6px;
+  align-items: center;
+}
+
+.arca-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #e2e8f0;
+  cursor: pointer;
+  user-select: none;
+}
+
+.arca-checkbox-label input {
+  accent-color: #0ea5e9;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+.arca-slider-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #e2e8f0;
+}
+
+.arca-slider-wrap span {
+  min-width: 20px;
+  text-align: right;
+  font-weight: bold;
+  color: #0ea5e9;
+}
+
+/* Slider Customization */
+input[type=range] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 80px;
+  background: transparent;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 14px;
+  width: 14px;
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
+  margin-top: -5px; 
+  box-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 4px;
+  cursor: pointer;
+  background: #0ea5e9; 
+  border-radius: 2px;
+}
+
+input[type=range]:disabled::-webkit-slider-runnable-track {
+  background: #475569;
+}
+
+input[type=range]:disabled::-webkit-slider-thumb {
+  background: #cbd5e1;
+}
+
+/* Main Content Image Grid */
+.arca-img-content {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: max-content;
+  align-content: start;
+  gap: 8px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+/* Custom Scrollbar */
+.arca-img-content::-webkit-scrollbar {
+  width: 6px;
+}
+.arca-img-content::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.2);
+  border-radius: 4px;
+}
+.arca-img-content::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 4px;
+}
+.arca-img-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.4);
+}
+
+/* Media Wrapper and Checking */
+.arca-media-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  cursor: pointer;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #0f172a;
+}
+
+.arca-media-wrapper img,
+.arca-media-wrapper video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+/* Image Selection Outline Optional */
+.arca-media-wrapper.selected {
+  outline: 2px solid #0ea5e9;
+  outline-offset: -2px;
+}
+
+/* Circular Checkbox Overlay */
+.arca-img-check {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 22px;
+  height: 22px;
+  line-height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.7);
+  background: rgba(0, 0, 0, 0.3);
+  display: none; /* Hidden by default */
+  pointer-events: none;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.5);
+}
+
+/* Active Mode Show Checkbox */
+.arca-select-mode .arca-img-check {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Checked State Styles */
+.arca-media-wrapper.selected .arca-img-check {
+  background: #0ea5e9;
+  border-color: #0ea5e9;
+}
+
+.arca-media-wrapper.selected .arca-img-check::after {
+  content: '';
+  display: block;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  margin-top: -2px;
+}
+
+.arca-img-loading, .arca-img-empty {
+  grid-column: span 2;
+  text-align: center;
+  color: #f8fafc;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  padding: 20px 0;
+}
+
+/* Footer Section */
+.arca-img-footer {
+  display: none; /* Only flex when select mode is active */
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 10px;
+}
+
+.arca-dl-btn {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  color: #f8fafc;
+  border: none;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.arca-dl-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.arca-dl-btn.primary {
+  background: #0ea5e9;
+}
+
+.arca-dl-btn.primary:hover {
+  background: #0284c7;
+}

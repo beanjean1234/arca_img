@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Arca Img Extension",
+  "version": "1.0",
+  "description": "Preview and Download Arca.live images on hover.",
+  "permissions": ["storage", "downloads"],
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://arca.live/*", "*://*.arca.live/*"],
+      "js": ["content.js"],
+      "css": ["content.css"]
+    }
+  ]
+}
