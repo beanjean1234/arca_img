@@ -2,6 +2,7 @@ const CACHE = new Map();
 let popupEl = null;
 
 let currentHoveredUrl = null;
+let currentHoveredTitle = null;
 let currentMediaList = [];
 
 // Selection State
@@ -13,16 +14,18 @@ let savedSize = null;
 let currentSettings = {
   isFolded: false,
   showAll: false,
-  limit: 5
+  limit: 5,
+  whiteMode: false,
+  columns: 2
 };
 
 chrome.storage.local.get(['arcaPopupX', 'arcaPopupY', 'arcaPopupW', 'arcaPopupH', 'arcaSettings'], (res) => {
   if (res.arcaPopupX !== undefined) savedPos = { x: res.arcaPopupX, y: res.arcaPopupY };
   if (res.arcaPopupW !== undefined) savedSize = { w: res.arcaPopupW, h: res.arcaPopupH };
   if (res.arcaSettings) currentSettings = { ...currentSettings, ...res.arcaSettings };
-  
+
   if (popupEl) {
-    applyStoredState(); 
+    applyStoredState();
   }
 });
 
@@ -40,42 +43,63 @@ function applyStoredState() {
     popupEl.style.right = '40px';
     popupEl.style.top = '100px';
   }
-  
+
   if (savedSize) {
     popupEl.style.width = savedSize.w;
     popupEl.style.height = savedSize.h;
   }
-  
+
   const chk = document.getElementById('arca-img-show-all');
   const slider = document.getElementById('arca-img-limit');
   const sliderVal = document.getElementById('arca-slider-val');
-  
+  const whiteModeChk = document.getElementById('arca-img-white-mode');
+
   if (chk) chk.checked = currentSettings.showAll;
   if (slider) {
-     slider.value = currentSettings.limit;
-     slider.disabled = currentSettings.showAll;
+    slider.value = currentSettings.limit;
+    slider.disabled = currentSettings.showAll;
   }
   if (sliderVal) sliderVal.innerText = currentSettings.limit;
-  
+  if (whiteModeChk) whiteModeChk.checked = currentSettings.whiteMode;
+
+  if (currentSettings.whiteMode) {
+    popupEl.classList.add('arca-white-mode');
+  } else {
+    popupEl.classList.remove('arca-white-mode');
+  }
+
+  const contentArea = document.getElementById('arca-img-content-area');
+  if (contentArea) {
+    contentArea.style.setProperty('--arca-cols', currentSettings.columns);
+  }
+
+  const colBtns = document.querySelectorAll('.arca-col-btn');
+  colBtns.forEach(btn => {
+    if (parseInt(btn.dataset.cols, 10) === currentSettings.columns) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+
   applyFoldState();
 }
 
 function applyFoldState() {
-  const bodyEl = document.querySelector('.arca-img-body');
+  const bodyWrap = document.querySelector('.arca-img-body-wrap');
   const foldBtn = document.querySelector('.arca-fold-btn');
-  if (!bodyEl || !foldBtn) return;
-  
+  if (!bodyWrap || !foldBtn) return;
+
   if (currentSettings.isFolded) {
-    bodyEl.style.display = 'none';
     foldBtn.innerText = '펼치기';
-    
-    // Collapse popup to header height
+    bodyWrap.classList.add('collapsed');
+
+    // allow height to animate down to header
     if (popupEl) popupEl.style.height = 'auto';
   } else {
-    bodyEl.style.display = 'flex';
     foldBtn.innerText = '접기';
-    
-    // Restore user-adjusted height if available
+    bodyWrap.classList.remove('collapsed');
+
     if (popupEl && savedSize && savedSize.h && savedSize.h !== 'auto') {
       popupEl.style.height = savedSize.h;
     }
@@ -86,72 +110,147 @@ function createPopup() {
   if (popupEl) return;
   popupEl = document.createElement('div');
   popupEl.id = 'arca-img-popup';
-  
+
   const headerEl = document.createElement('div');
   headerEl.className = 'arca-img-header';
-  
+
   const dragZone = document.createElement('div');
   dragZone.className = 'arca-drag-zone';
   dragZone.innerHTML = '&#10021; 이미지 뷰어 (드래그)';
-  
+
   const foldBtn = document.createElement('button');
   foldBtn.className = 'arca-fold-btn';
   foldBtn.innerText = '접기';
-  
+
+  const gearBtn = document.createElement('button');
+  gearBtn.className = 'arca-settings-btn';
+  gearBtn.innerHTML = '&#9881;';
+  gearBtn.title = '설정';
+
   headerEl.appendChild(dragZone);
+  headerEl.appendChild(gearBtn);
   headerEl.appendChild(foldBtn);
-  
+
   const bodyEl = document.createElement('div');
   bodyEl.className = 'arca-img-body';
-  
+
   const controlsHtml = `
-    <div class="arca-wrapper">
-      <div class="arca-slider-wrap">
-        이미지 수 <input type="range" id="arca-img-limit" min="5" max="10" step="1">
-        <span id="arca-slider-val"></span>
+    <div class="arca-wrapper" id="arca-img-settings-wrap" style="display: none;">
+      <div class="arca-toggle-group">
+        <span class="arca-label">전부 보기</span>
+        <label class="arca-switch">
+          <input type="checkbox" id="arca-img-show-all">
+          <span class="arca-switch-slider"></span>
+        </label>
       </div>
-      <label class="arca-checkbox-label">
-        <input type="checkbox" id="arca-img-show-all"> 전부 보기
-      </label>
-    </div>
-    <div class="arca-select-all-wrap" id="arca-select-all-area" style="display: none;">
-      <label class="arca-checkbox-label" style="color: #0ea5e9; font-weight: bold;">
-        <input type="checkbox" id="arca-img-select-all"> 모든 이미지 선택
-      </label>
+
+      <div class="arca-toggle-group">
+        <span class="arca-label">화이트 모드</span>
+        <label class="arca-switch">
+          <input type="checkbox" id="arca-img-white-mode">
+          <span class="arca-switch-slider"></span>
+        </label>
+      </div>
+
+      <div class="arca-divider"></div>
+
+      <div class="arca-slider-group">
+        <div class="arca-control-header">
+          <span class="arca-label">이미지 수</span>
+          <span id="arca-slider-val" class="arca-val-badge"></span>
+        </div>
+        <input type="range" id="arca-img-limit" min="5" max="10" step="1">
+      </div>
+
+      <div class="arca-divider"></div>
+
+      <div class="arca-segmented-group">
+        <span class="arca-label">표시 칸 수</span>
+        <div class="arca-segmented-control">
+          <button class="arca-col-btn" data-cols="1">1줄</button>
+          <button class="arca-col-btn" data-cols="2">2줄</button>
+        </div>
+      </div>
     </div>
   `;
   const controlsEl = document.createElement('div');
   controlsEl.innerHTML = controlsHtml;
-  
+
   const contentWrapperEl = document.createElement('div');
   contentWrapperEl.className = 'arca-img-content';
   contentWrapperEl.id = 'arca-img-content-area';
-  
+
   const footerEl = document.createElement('div');
   footerEl.className = 'arca-img-footer';
   footerEl.id = 'arca-img-footer-area';
   footerEl.innerHTML = `
-    <button class="arca-dl-btn primary" id="arca-dl-selected">선택 다운로드</button>
-    <button class="arca-dl-btn" id="arca-dl-all">모두 다운로드</button>
+    <div>
+      <button class="arca-dl-btn primary" id="arca-dl-selected">선택 다운로드</button>
+      <button class="arca-dl-btn" id="arca-dl-all">모두 다운로드</button>
+    </div>
   `;
-  
+
+  const selectAllArea = document.createElement('div');
+  selectAllArea.className = 'arca-select-all-wrap';
+  selectAllArea.id = 'arca-select-all-area';
+  selectAllArea.innerHTML = `
+    <div>
+      <label class="arca-checkbox-label modern" style="color: #0ea5e9; font-weight: bold;">
+        <input type="checkbox" id="arca-img-select-all"> 모든 이미지 선택
+      </label>
+    </div>
+  `;
+
+  const titleArea = document.createElement('div');
+  titleArea.className = 'arca-img-title-area';
+  titleArea.id = 'arca-img-title-area';
+  titleArea.style.display = 'none';
+
   bodyEl.appendChild(controlsEl);
+  bodyEl.appendChild(titleArea);
+  bodyEl.appendChild(selectAllArea);
   bodyEl.appendChild(contentWrapperEl);
   bodyEl.appendChild(footerEl);
-  
+
+  const bodyWrap = document.createElement('div');
+  bodyWrap.className = 'arca-img-body-wrap';
+  bodyWrap.appendChild(bodyEl);
+
   popupEl.appendChild(headerEl);
-  popupEl.appendChild(bodyEl);
+  popupEl.appendChild(bodyWrap);
   document.body.appendChild(popupEl);
-  
+
+  gearBtn.addEventListener('click', () => {
+    const wrap = document.getElementById('arca-img-settings-wrap');
+    if (wrap.style.display === 'none') {
+      wrap.style.display = 'flex';
+      gearBtn.classList.add('active');
+    } else {
+      wrap.style.display = 'none';
+      gearBtn.classList.remove('active');
+    }
+  });
+
   foldBtn.addEventListener('click', () => {
     currentSettings.isFolded = !currentSettings.isFolded;
     applyFoldState();
     saveSettings();
   });
-  
+
   const chk = document.getElementById('arca-img-show-all');
   const slider = document.getElementById('arca-img-limit');
   const sliderVal = document.getElementById('arca-slider-val');
+  const whiteModeChk = document.getElementById('arca-img-white-mode');
+
+  whiteModeChk.addEventListener('change', (e) => {
+    currentSettings.whiteMode = e.target.checked;
+    saveSettings();
+    if (currentSettings.whiteMode) {
+      popupEl.classList.add('arca-white-mode');
+    } else {
+      popupEl.classList.remove('arca-white-mode');
+    }
+  });
 
   chk.addEventListener('change', (e) => {
     currentSettings.showAll = e.target.checked;
@@ -165,11 +264,29 @@ function createPopup() {
     sliderVal.innerText = currentSettings.limit;
     renderMediaList();
   });
-  
+
   slider.addEventListener('change', () => {
     saveSettings();
   });
-  
+
+  const colBtns = document.querySelectorAll('.arca-col-btn');
+  colBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentSettings.columns = parseInt(btn.dataset.cols, 10);
+      saveSettings();
+
+      // Update UI active state
+      colBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // Apply to content area
+      const contentArea = document.getElementById('arca-img-content-area');
+      if (contentArea) {
+        contentArea.style.setProperty('--arca-cols', currentSettings.columns);
+      }
+    });
+  });
+
   const selectAllCb = document.getElementById('arca-img-select-all');
   if (selectAllCb) {
     selectAllCb.addEventListener('change', (e) => {
@@ -178,20 +295,25 @@ function createPopup() {
       if (!currentSettings.showAll) {
         toShow = currentMediaList.slice(0, currentSettings.limit);
       }
-      
+
       if (isChecked) {
         toShow.forEach(m => selectedMediaUrls.add(m.src));
       } else {
         toShow.forEach(m => selectedMediaUrls.delete(m.src));
       }
+
+      if (selectedMediaUrls.size === 0) {
+        isSelectMode = false;
+      }
+
       renderMediaList();
     });
   }
-  
+
   // Download Button Listeners
   const dlSelected = document.getElementById('arca-dl-selected');
   const dlAll = document.getElementById('arca-dl-all');
-  
+
   dlSelected.addEventListener('click', () => {
     if (selectedMediaUrls.size === 0) {
       alert("선택된 이미지가 없습니다.");
@@ -200,7 +322,7 @@ function createPopup() {
     const urls = Array.from(selectedMediaUrls);
     downloadImages(urls);
   });
-  
+
   dlAll.addEventListener('click', () => {
     let toShow = currentMediaList;
     if (!currentSettings.showAll) {
@@ -217,20 +339,20 @@ function createPopup() {
   let startX, startY, initialX, initialY;
 
   dragZone.addEventListener('mousedown', (e) => {
-    if (e.target !== dragZone) return; 
-    
+    if (e.target !== dragZone) return;
+
     isDragging = true;
     startX = e.clientX;
     startY = e.clientY;
     const rect = popupEl.getBoundingClientRect();
     initialX = rect.left;
     initialY = rect.top;
-    
+
     popupEl.style.right = 'auto';
     popupEl.style.bottom = 'auto';
     popupEl.style.left = `${initialX}px`;
     popupEl.style.top = `${initialY}px`;
-    e.preventDefault(); 
+    e.preventDefault();
   });
 
   document.addEventListener('mousemove', (e) => {
@@ -283,8 +405,8 @@ function downloadImages(urls) {
   if (urls.length === 0) return;
   chrome.runtime.sendMessage({ action: 'downloadImages', urls: urls }, (response) => {
     if (chrome.runtime.lastError) {
-       console.error("Download fail: ", chrome.runtime.lastError);
-       alert("다운로드 스크립트에 문제가 있습니다. 확장 프로그램을 다시 활성화해 주세요.");
+      console.error("Download fail: ", chrome.runtime.lastError);
+      alert("다운로드 스크립트에 문제가 있습니다. 확장 프로그램을 다시 활성화해 주세요.");
     }
     // Automatically leave selection mode
     isSelectMode = false;
@@ -296,10 +418,12 @@ function downloadImages(urls) {
 function renderState(stateHtmlOrKey) {
   const contentArea = document.getElementById('arca-img-content-area');
   const footerArea = document.getElementById('arca-img-footer-area');
+  const selectAllArea = document.getElementById('arca-select-all-area');
   if (!contentArea) return;
-  
-  if (footerArea) footerArea.style.display = 'none'; // hide footer in loading/empty state
-  
+
+  if (footerArea) footerArea.classList.remove('show');
+  if (selectAllArea) selectAllArea.classList.remove('show');
+
   if (stateHtmlOrKey === 'loading') {
     contentArea.innerHTML = '<div class="arca-img-loading">이미지 로딩 중...</div>';
   } else if (stateHtmlOrKey === 'empty') {
@@ -316,16 +440,18 @@ function renderMediaList() {
     selectedMediaUrls.clear();
     return;
   }
-  
+
   let toShow = currentMediaList;
   if (!currentSettings.showAll) {
     toShow = currentMediaList.slice(0, currentSettings.limit);
   }
-  
+
   const contentArea = document.getElementById('arca-img-content-area');
   const footerArea = document.getElementById('arca-img-footer-area');
   if (!contentArea) return;
-  
+
+  contentArea.style.setProperty('--arca-cols', currentSettings.columns);
+
   const html = toShow.map(m => {
     const isChecked = selectedMediaUrls.has(m.src) ? 'selected' : '';
     let mediaHTML = '';
@@ -341,34 +467,36 @@ function renderMediaList() {
       </div>
     `;
   }).join('');
-  
+
   contentArea.innerHTML = html;
-  
+
   // Update Selection View and Footer rendering
   const selectAllArea = document.getElementById('arca-select-all-area');
   const selectAllCb = document.getElementById('arca-img-select-all');
 
   if (isSelectMode) {
     contentArea.classList.add('arca-select-mode');
-    footerArea.style.display = 'flex';
-    if (selectAllArea) selectAllArea.style.display = 'flex';
-    
+
+    if (footerArea) footerArea.classList.add('show');
+    if (selectAllArea) selectAllArea.classList.add('show');
+
     // Automatically check 'Select All' if every displayed item is selected
     if (selectAllCb && toShow.length > 0) {
       selectAllCb.checked = toShow.every(m => selectedMediaUrls.has(m.src));
     }
   } else {
     contentArea.classList.remove('arca-select-mode');
-    footerArea.style.display = 'none';
-    if (selectAllArea) selectAllArea.style.display = 'none';
+
+    if (footerArea) footerArea.classList.remove('show');
+    if (selectAllArea) selectAllArea.classList.remove('show');
   }
-  
+
   // Attach select handlers dynamically
   const wrappers = contentArea.querySelectorAll('.arca-media-wrapper');
   wrappers.forEach(w => {
     w.addEventListener('click', () => {
       const src = w.getAttribute('data-src');
-      
+
       if (!isSelectMode) {
         // First click triggers Select Mode and checks the item
         isSelectMode = true;
@@ -383,6 +511,21 @@ function renderMediaList() {
           selectedMediaUrls.add(src);
           w.classList.add('selected');
         }
+
+        if (selectedMediaUrls.size === 0) {
+          isSelectMode = false;
+          renderMediaList();
+        } else {
+          // Update Select All Checkbox dynamically without full re-render
+          const selectAllCb = document.getElementById('arca-img-select-all');
+          if (selectAllCb) {
+            let toShow = currentMediaList;
+            if (!currentSettings.showAll) {
+              toShow = currentMediaList.slice(0, currentSettings.limit);
+            }
+            selectAllCb.checked = toShow.length > 0 && toShow.every(m => selectedMediaUrls.has(m.src));
+          }
+        }
       }
     });
   });
@@ -391,24 +534,24 @@ function renderMediaList() {
 function extractMedia(element, baseURI) {
   const isVideo = element.tagName.toLowerCase() === 'video';
   let src = element.getAttribute('src') || element.dataset.src;
-  
+
   if (!src && isVideo) {
     const source = element.querySelector('source');
     if (source) src = source.getAttribute('src');
   }
-  
+
   if (!src) return null;
-  
+
   if (!isVideo) {
     if (src.includes('clear.gif') || src.includes('avatar')) return null;
   }
-  
+
   if (src.startsWith('//')) {
     src = 'https:' + src;
   } else if (src.startsWith('/')) {
     src = new URL(src, baseURI).href;
   }
-  
+
   return { type: isVideo ? 'video' : 'img', src };
 }
 
@@ -416,46 +559,73 @@ async function fetchArticleImages(url) {
   if (CACHE.has(url)) {
     return CACHE.get(url);
   }
-  
+
   try {
     const response = await fetch(url);
     const html = await response.text();
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
-    
+
     const articleBody = doc.querySelector('.article-body');
-    if (!articleBody) throw new Error('article-body not found');
-    
+    if (!articleBody) {
+      // Not a valid article page (e.g., channel index link)
+      return [];
+    }
+
     const mediaQuery = 'img, video[data-orig="gif"], video[autoplay][loop]';
     const mediaList = Array.from(articleBody.querySelectorAll(mediaQuery))
       .map(el => extractMedia(el, url))
       .filter(Boolean);
-      
+
     CACHE.set(url, mediaList);
     return mediaList;
   } catch (err) {
-    console.error('Arca Img Preview error: ', err);
-    return null;
+    console.warn('Arca Img Preview failed to load link: ', url);
+    return [];
   }
 }
 
 document.addEventListener('mouseover', async (e) => {
   const target = e.target.closest('a.vrow.column');
   if (!target) return;
-  
+
   const href = target.href;
   if (!href || currentHoveredUrl === href) return;
-  
+
+  const titleEl = target.querySelector('.title');
+  currentHoveredTitle = '제목 없음';
+  if (titleEl) {
+    const textNode = Array.from(titleEl.childNodes).find(n => n.nodeType === Node.TEXT_NODE && n.textContent.trim().length > 0);
+    if (textNode) {
+      currentHoveredTitle = textNode.textContent.trim();
+    } else {
+      currentHoveredTitle = titleEl.textContent.trim();
+    }
+  }
+
+  // Clear previous highlighted background from all rows
+  document.querySelectorAll('a.vrow.column').forEach(el => {
+    el.style.backgroundColor = '';
+  });
+  // Highlight the current row
+  target.style.backgroundColor = 'var(--color-bg-focus)';
+
   // Reset states before exploring new thread
   currentHoveredUrl = href;
   isSelectMode = false;
   selectedMediaUrls.clear();
-  
+
   showPopup();
   renderState('loading');
-  
+
+  const titleArea = document.getElementById('arca-img-title-area');
+  if (titleArea) {
+    titleArea.innerHTML = `<a href="${href}" target="_blank">${currentHoveredTitle}</a>`;
+    titleArea.style.display = 'block';
+  }
+
   const mediaList = await fetchArticleImages(href);
-  
+
   if (currentHoveredUrl === href) {
     currentMediaList = mediaList;
     renderMediaList(); // Initial render will set footer 'display:none' initially
