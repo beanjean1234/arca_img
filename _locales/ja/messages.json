@@ -1,0 +1,59 @@
+{
+  "appName": {
+    "message": "ArcaPick"
+  },
+  "appDesc": {
+    "message": "Arcaの投稿にマウスを乗せると、投稿内の画像をプレビューしてダウンロードできます"
+  },
+  "drag_zone": {
+    "message": "&#10021; 画像ビューアー (ドラッグ)"
+  },
+  "fold": {
+    "message": "閉じる"
+  },
+  "unfold": {
+    "message": "広げる"
+  },
+  "settings": {
+    "message": "設定"
+  },
+  "white_mode": {
+    "message": "ホワイトモード"
+  },
+  "col_count": {
+    "message": "表示列数"
+  },
+  "col_1": {
+    "message": "1列"
+  },
+  "col_2": {
+    "message": "2列"
+  },
+  "dl_selected": {
+    "message": "選択ダウンロード"
+  },
+  "dl_all": {
+    "message": "すべてダウンロード"
+  },
+  "select_all": {
+    "message": "すべて選択"
+  },
+  "loading": {
+    "message": "画像を読み込み中..."
+  },
+  "empty": {
+    "message": "記事に画像がありません。"
+  },
+  "title_none": {
+    "message": "題名なし"
+  },
+  "dl_none_alert": {
+    "message": "選択された画像がありません。"
+  },
+  "dl_error_alert": {
+    "message": "ダウンロードスクリプトに問題があります。拡張機能を再起動してください。"
+  },
+  "lang": {
+    "message": "言語"
+  }
+}

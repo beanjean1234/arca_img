@@ -1,0 +1,59 @@
+{
+  "appName": {
+    "message": "ArcaPick"
+  },
+  "appDesc": {
+    "message": "Hover over a post on Arca Live to preview images inside it and download them."
+  },
+  "drag_zone": {
+    "message": "&#10021; Image Viewer (Drag)"
+  },
+  "fold": {
+    "message": "Fold"
+  },
+  "unfold": {
+    "message": "Unfold"
+  },
+  "settings": {
+    "message": "Settings"
+  },
+  "white_mode": {
+    "message": "White Mode"
+  },
+  "col_count": {
+    "message": "Columns"
+  },
+  "col_1": {
+    "message": "1 Col"
+  },
+  "col_2": {
+    "message": "2 Cols"
+  },
+  "dl_selected": {
+    "message": "Download Selected"
+  },
+  "dl_all": {
+    "message": "Download All"
+  },
+  "select_all": {
+    "message": "Select All"
+  },
+  "loading": {
+    "message": "Loading images..."
+  },
+  "empty": {
+    "message": "No images in this post."
+  },
+  "title_none": {
+    "message": "No Title"
+  },
+  "dl_none_alert": {
+    "message": "No images selected."
+  },
+  "dl_error_alert": {
+    "message": "Problem with the download script. Please reactivate the extension."
+  },
+  "lang": {
+    "message": "Language"
+  }
+}

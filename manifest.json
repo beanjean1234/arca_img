@@ -1,8 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "Arca Img Extension",
-  "version": "1.0.4",
-  "description": "Preview and Download Arca.live images on hover.",
+  "name": "__MSG_appName__",
+  "version": "1.0.5",
+  "description": "__MSG_appDesc__",
+  "default_locale": "ko",
   "permissions": [
     "storage",
     "downloads"

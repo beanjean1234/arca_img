@@ -1,0 +1,59 @@
+{
+  "appName": {
+    "message": "아카픽"
+  },
+  "appDesc": {
+    "message": "아카라이브의 글에 마우스를 올리면 글 속에 있는 이미지를 미리 볼 수 있고, 다운로드도 가능합니다."
+  },
+  "drag_zone": {
+    "message": "&#10021; 이미지 뷰어 (드래그)"
+  },
+  "fold": {
+    "message": "접기"
+  },
+  "unfold": {
+    "message": "펼치기"
+  },
+  "settings": {
+    "message": "설정"
+  },
+  "white_mode": {
+    "message": "화이트 모드"
+  },
+  "col_count": {
+    "message": "표시 칸 수"
+  },
+  "col_1": {
+    "message": "1줄"
+  },
+  "col_2": {
+    "message": "2줄"
+  },
+  "dl_selected": {
+    "message": "선택 다운로드"
+  },
+  "dl_all": {
+    "message": "모두 다운로드"
+  },
+  "select_all": {
+    "message": "모든 이미지 선택"
+  },
+  "loading": {
+    "message": "이미지 로딩 중..."
+  },
+  "empty": {
+    "message": "게시글에 이미지가 없습니다."
+  },
+  "title_none": {
+    "message": "제목 없음"
+  },
+  "dl_none_alert": {
+    "message": "선택된 이미지가 없습니다."
+  },
+  "dl_error_alert": {
+    "message": "다운로드 스크립트에 문제가 있습니다. 확장 프로그램을 다시 활성화해 주세요."
+  },
+  "lang": {
+    "message": "언어"
+  }
+}
