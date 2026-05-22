@@ -3,35 +3,55 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Arca Img Extension</title>
+  <title>ArcaPick</title>
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-  <div class="container">
-    <header>
-      <div class="logo-area">
-        <div class="logo-circle"></div>
-        <h1>Arca Img</h1>
+  <main class="popup-shell" aria-labelledby="app-title">
+    <header class="app-header">
+      <img class="app-mark" src="arca_img.png" alt="">
+      <div class="brand-copy">
+        <p class="viewer-label" data-i18n="popup_viewer">Image viewer</p>
+        <h1 id="app-title" data-i18n="appName">ArcaPick</h1>
       </div>
-      <p class="subtitle">Premium Extension Template</p>
+      <div class="app-state" aria-live="polite">
+        <span class="state-dot" aria-hidden="true"></span>
+        <span data-i18n="popup_enabled">Enabled</span>
+      </div>
     </header>
 
-    <main>
-      <div class="card">
-        <div class="status-indicator">
-          <span class="dot live"></span>
-          <span class="status-text">Active</span>
-        </div>
-        <button id="actionBtn" class="primary-btn">
-          Perform Action
-        </button>
+    <section class="settings-panel" aria-labelledby="settings-title">
+      <div class="section-header">
+        <h2 id="settings-title" data-i18n="settings">Settings</h2>
+        <output id="saveStatus" class="save-status" aria-live="polite"></output>
       </div>
-    </main>
 
-    <footer>
-      <p>© 2026 Arca Creative</p>
-    </footer>
-  </div>
+      <div class="setting-row">
+        <label class="setting-label" for="whiteMode" data-i18n="white_mode">White Mode</label>
+        <label class="switch">
+          <input id="whiteMode" type="checkbox">
+          <span class="switch-track" aria-hidden="true"></span>
+        </label>
+      </div>
+
+      <div class="setting-stack">
+        <span id="columnLabel" class="setting-label" data-i18n="col_count">Columns</span>
+        <div class="segmented-control" role="group" aria-labelledby="columnLabel">
+          <button type="button" data-columns="1" data-i18n="col_1">1 Col</button>
+          <button type="button" data-columns="2" data-i18n="col_2">2 Cols</button>
+        </div>
+      </div>
+
+      <div class="setting-stack language-stack">
+        <span id="languageLabel" class="setting-label" data-i18n="lang">Language</span>
+        <div class="segmented-control" role="group" aria-labelledby="languageLabel">
+          <button type="button" data-lang="ko">KO</button>
+          <button type="button" data-lang="ja">JA</button>
+          <button type="button" data-lang="en">EN</button>
+        </div>
+      </div>
+    </section>
+  </main>
   <script src="popup.js"></script>
 </body>
 </html>

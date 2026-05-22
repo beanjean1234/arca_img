@@ -5,6 +5,15 @@
   "appDesc": {
     "message": "아카라이브의 글에 마우스를 올리면 글 속에 있는 이미지를 미리 볼 수 있고, 다운로드도 가능합니다."
   },
+  "popup_viewer": {
+    "message": "이미지 뷰어"
+  },
+  "popup_enabled": {
+    "message": "활성화됨"
+  },
+  "popup_saved": {
+    "message": "저장됨"
+  },
   "drag_zone": {
     "message": "&#10021; 이미지 뷰어 (드래그)"
   },

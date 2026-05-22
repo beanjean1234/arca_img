@@ -5,6 +5,15 @@
   "appDesc": {
     "message": "Arcaの投稿にマウスを乗せると、投稿内の画像をプレビューしてダウンロードできます"
   },
+  "popup_viewer": {
+    "message": "画像ビューアー"
+  },
+  "popup_enabled": {
+    "message": "有効"
+  },
+  "popup_saved": {
+    "message": "保存済み"
+  },
   "drag_zone": {
     "message": "&#10021; 画像ビューアー (ドラッグ)"
   },

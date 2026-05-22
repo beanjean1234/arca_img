@@ -5,6 +5,15 @@
   "appDesc": {
     "message": "Hover over a post on Arca Live to preview images inside it and download them."
   },
+  "popup_viewer": {
+    "message": "Image viewer"
+  },
+  "popup_enabled": {
+    "message": "Enabled"
+  },
+  "popup_saved": {
+    "message": "Saved"
+  },
   "drag_zone": {
     "message": "&#10021; Image Viewer (Drag)"
   },

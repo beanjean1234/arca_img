@@ -107,6 +107,16 @@ chrome.storage.local.get(['arcaPopupX', 'arcaPopupY', 'arcaPopupW', 'arcaPopupH'
   }
 });
 
+chrome.storage.onChanged.addListener((changes, areaName) => {
+  if (areaName !== 'local' || !changes.arcaSettings || !changes.arcaSettings.newValue) return;
+
+  currentSettings = { ...currentSettings, ...changes.arcaSettings.newValue };
+  if (popupEl) {
+    applyStoredState();
+    renderMediaList();
+  }
+});
+
 function saveSettings() {
   chrome.storage.local.set({ arcaSettings: currentSettings });
 }
