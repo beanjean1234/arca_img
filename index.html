@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>개인정보처리방침</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #1a1a1a;
+      --ink-soft: #3d3d3d;
+      --ink-muted: #777;
+      --rule: #d0c8bd;
+      --bg: #f7f4ef;
+      --paper: #fdfaf6;
+      --accent: #2c4a3e;
+      --accent-light: #e8f0ec;
+      --number: #b5a99a;
+    }
+
+    html { font-size: 17px; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 300;
+      line-height: 1.85;
+      min-height: 100vh;
+      padding: 0;
+    }
+
+    /* === HEADER === */
+    header {
+      background: var(--accent);
+      color: #fff;
+      padding: 4rem 2rem 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 39px,
+        rgba(255,255,255,0.04) 39px,
+        rgba(255,255,255,0.04) 40px
+      );
+    }
+    header .label {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 1rem;
+    }
+    header h1 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(1.6rem, 5vw, 2.6rem);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+      position: relative;
+    }
+    header .meta {
+      margin-top: 1.4rem;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.05em;
+    }
+
+    /* === MAIN LAYOUT === */
+    main {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+    }
+
+    /* === INTRO BLOCK === */
+    .intro {
+      background: var(--paper);
+      border-left: 3px solid var(--accent);
+      padding: 1.5rem 1.8rem;
+      margin-bottom: 3rem;
+      border-radius: 0 4px 4px 0;
+      font-size: 0.92rem;
+      color: var(--ink-soft);
+      line-height: 1.9;
+    }
+
+    /* === SECTION === */
+    section {
+      margin-bottom: 2.8rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .section-number {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--number);
+      min-width: 2rem;
+      line-height: 1;
+    }
+
+    .section-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+
+    .section-body {
+      padding-left: 3rem;
+      font-size: 0.92rem;
+      color: var(--ink-soft);
+    }
+
+    .section-body p { margin-bottom: 0.85rem; }
+    .section-body p:last-child { margin-bottom: 0; }
+
+    /* data tags */
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1rem 0;
+    }
+    .tag {
+      background: var(--accent-light);
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 500;
+      padding: 0.3rem 0.75rem;
+      border-radius: 2px;
+      letter-spacing: 0.02em;
+    }
+
+    .category-block {
+      margin-bottom: 1.2rem;
+    }
+    .category-label {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 0.45rem;
+    }
+
+    /* highlight box */
+    .highlight-box {
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      padding: 1rem 1.2rem;
+      margin-top: 0.8rem;
+      font-size: 0.88rem;
+      color: var(--ink-soft);
+    }
+    .highlight-box strong {
+      display: block;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 0.25rem;
+      font-size: 0.82rem;
+      letter-spacing: 0.03em;
+    }
+
+    /* contact */
+    .contact-card {
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      padding: 1.2rem 1.4rem;
+      margin-top: 0.8rem;
+    }
+    .contact-card .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.88rem;
+      color: var(--ink-soft);
+      padding: 0.3rem 0;
+    }
+    .contact-card .contact-row .icon {
+      font-size: 1rem;
+      width: 1.4rem;
+      text-align: center;
+    }
+
+    /* === FOOTER === */
+    footer {
+      text-align: center;
+      padding: 2rem 1rem 3rem;
+      font-size: 0.75rem;
+      color: var(--ink-muted);
+      border-top: 1px solid var(--rule);
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 520px) {
+      header { padding: 3rem 1.2rem 2.2rem; }
+      .section-body { padding-left: 0; }
+      .section-number { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="label">Chrome Extension</div>
+  <h1>개인정보처리방침</h1>
+  <div class="meta">Privacy Policy · 최종 업데이트: 2025년</div>
+</header>
+
+<main>
+
+  <div class="intro">
+    본 개인정보처리방침은 크롬 확장 프로그램(이하 "확장 프로그램")이 수집하는 개인정보의 항목, 수집 목적, 이용 방법, 보유 기간 및 파기 절차 등을 안내합니다. 확장 프로그램을 설치하거나 사용하는 경우, 본 방침에 동의한 것으로 간주합니다.
+  </div>
+
+  <!-- 1 -->
+  <section>
+    <div class="section-header">
+      <span class="section-number">01</span>
+      <span class="section-title">개인정보의 처리 목적</span>
+    </div>
+    <div class="section-body">
+      <p>확장 프로그램은 다음의 목적을 위하여 개인정보를 처리합니다. 처리하는 개인정보는 아래 목적 이외의 용도로는 이용되지 않으며, 이용 목적이 변경될 경우에는 별도의 동의를 받는 등 필요한 조치를 이행할 예정입니다.</p>
+      <div class="highlight-box">
+        <strong>주요 처리 목적</strong>
+        서비스 제공 및 기능 구현 / 사용자 활동 분석 및 통계 처리 / 콘텐츠 상호작용 기록 및 사용성 개선 / 네트워크 요청 모니터링 및 오류 추적 / 확장 프로그램 성능 최적화
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section>
+    <div class="section-header">
+      <span class="section-number">02</span>
+      <span class="section-title">처리하는 개인정보의 항목</span>
+    </div>
+    <div class="section-body">
+      <p>확장 프로그램은 서비스 제공을 위해 아래와 같은 정보를 수집합니다.</p>
+
+      <div class="category-block">
+        <div class="category-label">수집 항목 1 — 마우스 위치 (Mouse Position)</div>
+        <div class="highlight-box">
+          <strong>용도 1 · 호버 감지</strong>
+          사용자의 마우스 커서가 특정 게시물 링크 위에 있는지 실시간으로 확인하여 미리보기 팝업을 표시하는 신호로 사용합니다.
+        </div>
+        <div class="highlight-box" style="margin-top:0.5rem;">
+          <strong>용도 2 · 드래그 제어</strong>
+          팝업창 상단의 핸들을 잡고 이동할 때, 마우스의 현재 좌표를 계산하여 창의 위치를 실시간으로 변경합니다.
+        </div>
+        <div class="highlight-box" style="margin-top:0.5rem;">
+          <strong>용도 3 · 사이즈 조절</strong>
+          우측 하단 리사이즈 손잡이를 드래그할 때, 마우스 좌표를 기반으로 창의 너비와 높이를 계산하여 반영합니다.
+        </div>
+      </div>
+
+      <div class="category-block" style="margin-top:1.4rem;">
+        <div class="category-label">수집 항목 2 — 클릭 및 클릭 상호작용 (Clicks)</div>
+        <div class="highlight-box">
+          <strong>용도 1 · 기능 실행</strong>
+          팝업창 내의 [접기/펼치기], [전부 보기], [다운로드] 버튼 클릭 여부를 감지하여 해당 기능을 수행합니다.
+        </div>
+        <div class="highlight-box" style="margin-top:0.5rem;">
+          <strong>용도 2 · 이미지 선택</strong>
+          미리보기 이미지를 클릭하여 체크박스를 활성화하고 다운로드 대상을 지정할 때 사용합니다.
+        </div>
+        <div class="highlight-box" style="margin-top:0.5rem;">
+          <strong>용도 3 · 슬라이더 조절</strong>
+          이미지 개수 조절 슬라이더를 클릭하거나 드래그하여 값을 변경할 때 사용합니다.
+        </div>
+      </div>
+
+      <p style="margin-top:1.2rem;">수집 정보는 확장 프로그램의 기능 수행에 필요한 최소한의 범위 내에서만 처리되며, 서버로 전송되거나 외부에 공유되지 않습니다.</p>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section>
+    <div class="section-header">
+      <span class="section-number">03</span>
+      <span class="section-title">개인정보의 보유 및 이용 기간</span>
+    </div>
+    <div class="section-body">
+      <p>수집된 개인정보는 처리 목적이 달성될 때까지 보유합니다. 구체적인 보유 기간은 아래와 같습니다.</p>
+      <div class="highlight-box">
+        <strong>기본 원칙</strong>
+        확장 프로그램 삭제(제거) 시 로컬에 저장된 모든 데이터를 즉시 삭제합니다.
+      </div>
+      <div class="highlight-box" style="margin-top:0.6rem;">
+        <strong>외부 서버 전송 데이터</strong>
+        외부 서버에 전송된 데이터는 해당 서비스의 보유 정책에 따르며, 법령에서 별도로 정한 경우에는 그 기간을 따릅니다.
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section>
+    <div class="section-header">
+      <span class="section-number">04</span>
+      <span class="section-title">개인정보의 제3자 제공에 관한 사항</span>
+    </div>
+    <div class="section-body">
+      <p>확장 프로그램은 원칙적으로 사용자의 개인정보를 제3자에게 제공하지 않습니다.</p>
+      <p>다만, 아래의 경우는 예외로 합니다.</p>
+      <div class="highlight-box">
+        <strong>예외 사항</strong>
+        사용자가 사전에 동의한 경우 / 법령의 규정에 의거하거나, 수사 목적으로 법령에 정해진 절차와 방법에 따라 수사기관이 요구하는 경우
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section>
+    <div class="section-header">
+      <span class="section-number">05</span>
+      <span class="section-title">사용자의 권리와 그 행사 방법</span>
+    </div>
+    <div class="section-body">
+      <p>사용자는 확장 프로그램이 보유한 자신의 개인정보에 대해 다음의 권리를 행사할 수 있습니다.</p>
+      <div class="tag-list" style="margin-bottom:0.8rem;">
+        <span class="tag">개인정보 열람 요청</span>
+        <span class="tag">오류 정정 요청</span>
+        <span class="tag">삭제 요청</span>
+        <span class="tag">처리 정지 요청</span>
+      </div>
+      <p>권리 행사는 아래 7항의 개인정보 보호책임자에게 이메일 또는 문의 기능을 통해 요청하실 수 있으며, 지체 없이 조치하겠습니다.</p>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section>
+    <div class="section-header">
+      <span class="section-number">06</span>
+      <span class="section-title">개인정보의 파기 절차 및 방법</span>
+    </div>
+    <div class="section-body">
+      <p>확장 프로그램은 개인정보 보유 기간이 경과하거나 처리 목적이 달성된 경우, 지체 없이 해당 개인정보를 파기합니다.</p>
+      <div class="highlight-box">
+        <strong>전자적 파일 형태</strong>
+        기록을 재생할 수 없는 기술적 방법을 적용하여 삭제합니다.
+      </div>
+      <div class="highlight-box" style="margin-top:0.6rem;">
+        <strong>브라우저 로컬 저장소(localStorage, IndexedDB 등)</strong>
+        확장 프로그램 제거 시 브라우저 API를 통해 저장된 데이터 전체를 삭제합니다.
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section>
+    <div class="section-header">
+      <span class="section-number">07</span>
+      <span class="section-title">개인정보 보호책임자</span>
+    </div>
+    <div class="section-body">
+      <p>개인정보 처리에 관한 업무를 총괄하며, 개인정보와 관련한 불만 처리 및 피해 구제를 담당합니다.</p>
+      <div class="contact-card">
+        <div class="contact-row">
+          <span class="icon">👤</span>
+          <span>개인정보 보호책임자: 확장 프로그램 개발자</span>
+        </div>
+        <div class="contact-row">
+          <span class="icon">✉️</span>
+          <span>이메일: beanjean1234@gmail.com</span>
+        </div>
+        <div class="contact-row">
+          <span class="icon">💬</span>
+          <span>문의: 확장 프로그램 내 <strong>개발자에게 문의하기</strong> 기능 이용</span>
+        </div>
+      </div>
+      <p style="margin-top:1rem; font-size:0.84rem; color:var(--ink-muted);">정보주체는 「개인정보 보호법」 제77조에 따라 개인정보침해 신고센터, 개인정보 분쟁조정위원회 등에 분쟁 해결을 신청할 수 있습니다.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>본 개인정보처리방침은 법령 및 지침의 변경, 또는 서비스 변경에 따라 사전 고지 후 개정될 수 있습니다.</p>
+  <p style="margin-top:0.4rem;">© 2025 Chrome Extension Developer. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
